@@ -48,3 +48,24 @@ test('Execute SQL Query with WHERE Clause', async () => {
     expect(result[0]).toHaveProperty('name');
     expect(result[0].id).toBe('2');
 });
+
+test('Execute SQL Query with WHERE Clause (Case-insensitive)', async () => {
+    const query = 'SELECT id, name FROM sample WHERE age = 25';
+    const result = await executeSELECTQuery(query);
+    expect(result.length).toBe(1);
+    expect(result[0]).toHaveProperty('id');
+    expect(result[0]).toHaveProperty('name');
+    expect(result[0].id).toBe('2');
+});
+
+test('Execute SQL Query with Invalid WHERE Clause', async () => {
+    const query = 'SELECT id, name FROM sample WHERE Age = 30'; // Invalid condition
+    const result = await executeSELECTQuery(query);
+    expect(result).toEqual({ error: 'An error occurred while processing the query' });
+});
+
+test('Execute SQL Query with Empty CSV Data', async () => {
+    const query = 'SELECT id, name FROM emptyTable WHERE Age = 25'; // Non-existent table
+    const result = await executeSELECTQuery(query);
+    expect(result).toEqual({ error: 'Empty or invalid data in CSV file' });
+});
