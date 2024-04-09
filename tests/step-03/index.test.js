@@ -17,3 +17,10 @@ test('Parse SQL Query', () => {
         table: 'sample'
     });
 });
+
+test('Parse SQL Query - Invalid Format', () => {
+    const invalidQuery = 'SELECT * WHERE';
+    expect(() => {
+        parseQuery(invalidQuery);
+    }).toThrow('Invalid query format');
+});
