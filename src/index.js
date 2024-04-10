@@ -20,8 +20,8 @@ async function executeSELECTQuery(query) {
 
     // Apply WHERE clause filtering
     const filteredData = whereClauses.length > 0
-    ? data.filter(row => whereClauses.every(clause => evaluateCondition(row, clause)))
-    : data;
+        ? data.filter(row => whereClauses.every(clause => evaluateCondition(row, clause)))
+        : data;
 
     // Select the specified fields
     return filteredData.map(row => {
