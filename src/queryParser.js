@@ -16,14 +16,14 @@ function parseQuery(query) {
 }
 
 function parseWhereClause(whereString) {
-    const conditions = whereString.split(/ AND | OR /i);
-    return conditions.map(condition => {
-        const parts = condition.split(/\s+/);
-        if (parts.length !== 3) {
-            throw new Error(`Invalid condition: ${condition}`);
+    const conditionRegex = /(.*?)(=|!=|>|<|>=|<=)(.*)/;
+    return whereString.split(/ AND | OR /i).map(conditionString => {
+        const match = conditionString.match(conditionRegex);
+        if (match) {
+            const [, field, operator, value] = match;
+            return { field: field.trim(), operator, value: value.trim() };
         }
-        const [field, operator, value] = parts;
-        return { field, operator, value };
+        throw new Error('Invalid WHERE clause format');
     });
 }
 
